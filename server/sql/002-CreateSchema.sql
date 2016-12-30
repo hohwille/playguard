@@ -11,7 +11,7 @@ CREATE TABLE Player (
   login_source   VARCHAR(20),
   login_ip       VARCHAR(20),
   login_date     DATETIME,
-  logout_end     DATETIME,
+  logout_date    DATETIME,
   confirm_date   DATETIME,
   played_day     INT,
   played_week    INT
