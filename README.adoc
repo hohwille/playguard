@@ -1,0 +1,25 @@
+:toc:
+toc::[]
+
+= playguard
+
+== English
+Playguard is a software solution to limit computer usage time for children.
+It offers the following features:
+
+* Tracking of the computer usage times of guarded users from login to logout.
+* Quota per guarded user with limitation of maximum usage per day and per week.
+* Support for special limitations for specific days or weeks (e.g. extra time as bonus, no or less time as malus, unlimited playing day, etc.).
+* Disabeling of users.
+* A link:../../tree/master/server[server side solution] that manages the guarded accounts and their time for all guarded devices in your home network.
+* link:../../tree/master/client[Client side solutions] for different operating systems that notify the server on login and logout, lock users if time it out, etc.
+
+== German
+Playguard ist eine software Lösung, um die Computer-Nutzungszeit für Kinder zu beschränken. Es bietet folgende Funktionen:
+
+* Verfolgung der Computer-Nutzungszeiten der bewachten Nutzer vom Login (Anmeldung am PC) bis zum Logout (Abmeldung).
+* Kontingent pro bewachtem Nutzer mit Limitierung der maximalen Nutzung pro Tag und pro Woche.
+* Unterstützung für spezielle Beschränkungen für spezifische Tage oder Wochen (z.B. Extra-Zeit als Belohnung, keine oder weniger Zeit als Strafe, unbegrenzter Spieltag, usw.).
+* Benutzer komplett sperren.
+* Eine link:../../tree/master/server[Server-seitige Lösung], welche die bewachten Nutzer und ihre Zeiten für alle überwachten Geräte in ihrem Heimnetzwerk verwaltet.
+* link:../../tree/master/client[Client-seitige Lösungen] für unterschiedliche Betriebssysteme welche den Server beim Login und Logout benachrichtigen, Benutzer sperren wenn ihre Zeit aufgebraucht ist, usw.
