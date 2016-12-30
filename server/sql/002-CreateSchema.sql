@@ -14,7 +14,8 @@ CREATE TABLE Player (
   logout_date    DATETIME,
   confirm_date   DATETIME,
   played_day     INT,
-  played_week    INT
+  played_week    INT,
+  password_hash  VARCHAR(100)
 );
 
 CREATE TABLE Playtime (
