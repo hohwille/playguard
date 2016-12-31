@@ -3,10 +3,6 @@ include('./classes/Main.php');
 $now=time();
 $main = new Main();
 $player = $main->getPlayerLoggedIn();
-echo $player->login;
-echo 'X';
-echo $player->loginSource;
-echo 'X';
 $command = $_GET['cmd'];
 $source = $_GET['src'];
 if ($command == 'login') {
