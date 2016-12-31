@@ -36,7 +36,7 @@ class Database {
       $player->maxExtraDay = $row->max_extra_day;
       $player->maxExtraWeek = $row->max_extra_week;
       $player->lockedUntil = $row->locked_until;
-      $player->loginSource = $row->loginSource;
+      $player->loginSource = $row->login_source;
       $player->loginIp = $row->login_ip;
       $player->loginDate = Time::getTimestamp($row->login_date);
       $player->logoutDate = Time::getTimestamp($row->logout_date);

@@ -25,7 +25,7 @@ class Playtime {
   
   function getDay() {
     if ($this->day == NULL) {
-      $this->day = Time::getDay($this->loginDate);
+      $this->day = Time::getDayTimestamp($this->loginDate);
     }
     return $this->day;
   }
@@ -64,10 +64,11 @@ class Playdays {
 
   function add($playtime) {
     $day = $playtime->getDay();
-    if ($this->days[$day] == NULL) {
-      $this->days[$day] = new Playday($day);
+    $key = Time::formatDate($day);
+    if ($this->days[$key] == NULL) {
+      $this->days[$key] = new Playday($day);
     }
-    $this->days[$day].add($playtime);
+    $this->days[$key]->add($playtime);
     $this->total = $this->total + $playtime->getDuration();
   }
 }

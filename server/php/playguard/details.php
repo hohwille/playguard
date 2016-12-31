@@ -29,7 +29,7 @@ $playdays = $main->getDatabase()->getPlaydays($player->login, $start, $end);
 <h2><?php echo LABEL_THIS_WEEK ?></h2>
 <label><?php echo LABEL_REMAINING ?>:</label> <?php echo Time::formatSeconds($player->getRestThisWeek()) ?><br>
 <label><?php echo LABEL_PLAYED ?>:</label> <?php echo Time::formatSeconds($player->getPlayedThisWeek()) ?>/<?php echo Time::formatSeconds($player->getMaxThisWeek()) ?><br>
-<h2><?php echo LABEL_HISTORY . ' (' . Time::formatDay($start) . '-' . Time::formatDay($end) . ')' ?></h2>
+<h2><?php echo LABEL_HISTORY . ' (' . Time::formatDate($start) . '-' . Time::formatDate($end) . ')' ?></h2>
 <table>
 <thead>
 <tr>
@@ -45,7 +45,7 @@ $playdays = $main->getDatabase()->getPlaydays($player->login, $start, $end);
 <?php
 foreach($playdays->days as $playday) { ?>
 <tr>
-  <td rowspan="<?php echo sizeof($playday->times) + 1 ?>"><?php echo $playday->day ?></td>
+  <td rowspan="<?php echo (sizeof($playday->times) + 1) ?>"><?php echo Time::formatDate($playday->day) ?></td>
 <?php
   foreach($playday->times as $playtime) { ?>
   <td><?php echo Time::formatTime($playtime->loginDate) ?></td>
