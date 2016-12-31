@@ -19,9 +19,10 @@ CREATE TABLE Player (
 );
 
 CREATE TABLE Playtime (
-  login        VARCHAR(10) NOT NULL,
-  login_source VARCHAR(20) NOT NULL,
-  login_ip     VARCHAR(20) NOT NULL,
-  login_date   DATETIME NOT NULL,
-  logout_date  DATETIME NOT NULL
+  login            VARCHAR(10) NOT NULL,
+  login_source     VARCHAR(20) NOT NULL,
+  login_ip         VARCHAR(20) NOT NULL,
+  login_date       DATETIME NOT NULL,
+  logout_date      DATETIME NOT NULL,
+  logout_confirmed BOOLEAN  
 );

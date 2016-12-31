@@ -50,12 +50,17 @@ class Main {
     echo 'Unauthorized';
     exit;
   }
-
-  public function getPlayerLoggedIn() {
+  
+  public static function getLogin() {
     $login = $_SERVER['PHP_AUTH_USER'];
     if ($login == NULL) {
       Main::authenticationRequired();
     }
+    return $login;    
+  }
+
+  public function getPlayerLoggedIn() {
+    $login = Main::getLogin();
     $player = $this->getPlayers()[$login];
     if ($player == NULL) {
       Main::authenticationRequired();

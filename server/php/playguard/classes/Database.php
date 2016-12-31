@@ -32,17 +32,18 @@ class Database {
       $player->login = $row->login;
       $player->maxPerDay = $row->max_per_day;
       $player->maxPerWeek = $row->max_per_week;
-      $player->extraDay = $row->extra_day;
+      $player->extraDay = Time::getTimestamp($row->extra_day);
       $player->maxExtraDay = $row->max_extra_day;
       $player->maxExtraWeek = $row->max_extra_week;
       $player->lockedUntil = $row->locked_until;
       $player->loginSource = $row->loginSource;
       $player->loginIp = $row->login_ip;
-      $player->loginDate = $row->login_date;
-      $player->logoutDate = $row->logout_date;
-      $player->confirmDate = $row->confirm_date;
+      $player->loginDate = Time::getTimestamp($row->login_date);
+      $player->logoutDate = Time::getTimestamp($row->logout_date);
+      $player->confirmDate = Time::getTimestamp($row->confirm_date);
       $player->playedDay = $row->played_day;
       $player->playedWeek = $row->played_week;
+      $player->passwordHash = $row->password_hash;
       $players[$player->login] = $player;
     }
     $statement->close();
@@ -102,8 +103,8 @@ class Database {
       $playtime->login = $row->login;
       $playtime->loginSource = $row->login_source;
       $playtime->loginIp = $row->login_ip;
-      $playtime->loginDate = $row->login_date;
-      $playtime->logoutDate = $row->logout_date;
+      $playtime->loginDate = Time::getTimestamp($row->login_date);
+      $playtime->logoutDate = Time::getTimestamp($row->logout_date);
       $playtime->logoutConfirmed = $row->logout_confirmed;
       $playdays->add($playtime);
     }

@@ -102,8 +102,12 @@ class Player {
     return $rest;
   }
   
+  public static function getPasswordHash($password) {
+    return password_hash($password, PASSWORD_BCRYPT);
+  }
+  
   function setPassword($password) {
-    $this->passwordHash = password_hash($password, PASSWORD_BCRYPT);
+    $this->passwordHash = getPasswordHash($password);
   }
   
   function checkPassword($password) {

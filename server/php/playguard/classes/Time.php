@@ -13,6 +13,13 @@ class Time {
     return sprintf('%02d:%02d:%02d', ($t/3600),($t/60%60), $t%60);
   }
 
+  public static function getTimestamp($dateString) {
+    if ($dateString == NULL) {
+      return NULL;
+    }
+    return strtotime($dateString);
+  }
+  
   public static function formatDate($timestamp) {
     return Time::formatTimestamp($timestamp, 'Y-m-d');
   }
@@ -77,10 +84,10 @@ class Time {
   }
 
   public static function isToday($date) {
-    if ($date) {
+    if ($date != NULL) {
       $today = new DateTime();
       $today->setTime(0, 0, 0);
-      $delta = $date - $today;
+      $delta = $date - $today->getTimestamp();
       if (($delta >= 0) &&  ($delta < 24 * 60 * 60)) {
         return true;
       }
@@ -89,7 +96,7 @@ class Time {
   }
  
   public static function isThisWeek($date) {
-    if ($date) {
+    if ($date != NULL) {
       $day = Time::getMondayOfThisWeek();
       if ($date >= $day->getTimestamp()) {
         $day->add(new DateInterval('P7D'));
