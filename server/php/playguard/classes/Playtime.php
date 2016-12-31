@@ -49,7 +49,7 @@ class Playday {
   }
 
   function add($playtime) {
-    $times[] = $playtime;
+    $this->times[] = $playtime;
     $this->total = $this->total + $playtime->getDuration();
   }
 }

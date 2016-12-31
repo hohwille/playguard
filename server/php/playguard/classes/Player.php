@@ -113,5 +113,13 @@ class Player {
   function checkPassword($password) {
     return password_verify($password, $this->passwordHash);
   }
+  
+  function verifySource($source) {
+    if ($source != $this->loginSource) {
+      header('HTTP/1.1 909 Source Missmatch');
+      echo  $source . ' vs ' . $this->loginSource;
+      exit;    
+    }
+  }
 }
 ?>

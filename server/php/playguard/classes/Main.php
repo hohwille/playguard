@@ -70,6 +70,82 @@ class Main {
     }
     return $player;
   }
+
+  public function login($player, $loginDate, $source) {
+    if (($player->loginDate != NULL) && ($player->logoutDate == NULL)) { // implicit force logout (e.g. from new login)?
+      $logoutMin = $player->confirmDate + $config['reloginDelay'];
+      if ($loginDate < $logoutMin) {
+        respond('903 Already Logged-In', 0);
+        exit;
+      }
+      // auto-logout
+      $logoutMax = $player->confirmDate + $config['reloginMaxPenalty'];
+      if ($loginDate > $logoutMax) {
+        $logoutDate = $logoutMax;
+      } else {
+        $logoutDate = $loginDate;
+      }
+      $this->doLogout($player, $logoutDate, $source, false);
+    }
+    $remaining = $player->getRest();
+    if ($remaining == 0) {
+      $this->respondRemaintingTime($remaining);
+      exit;
+    }
+    if ($player->loginDate != NULL) {
+      $previousLoginDay = Time::getDay($player->loginDate);
+      $currentLoginDay = Time::getDay($loginDate);
+      $daysSincePreviousLogin = $currentLoginDay->diff($previousLoginDay)->format('%a');
+      if ($daysSincePreviousLogin > 0) {
+        if (($daysSincePreviousLogin < 8) && ($previousLoginDay->format('W') == $currentLoginDay->format('W'))) {
+          $player->playedWeek = $player->playedWeek + $player->playedDay;
+        } else {
+          $player->playedWeek = 0;
+        }       
+        $player->playedDay = 0;
+      }
+    }
+    $player->loginDate = $loginDate;
+    $player->confirmDate = $loginDate;
+    $player->logoutDate = NULL;
+    $player->loginSource = $source;
+    $player->loginIp = $_SERVER['REMOTE_ADDR'];
+    $this->getDatabase()->updatePlayerLoginData($player);
+  }
+
+  public function logout($player, $logoutDate, $source) {
+    $this->doLogout($player, $logoutDate, $source, true);
+    $this->getDatabase()->updatePlayerLoginData($player);
+  }
   
+  private function doLogout($player, $logoutDate, $source, $logoutConfirmed) {
+    global $config;
+    if ($player->logoutDate != NULL) { // already logged out?
+      respond('904 Already Logged-Out', 0);
+      exit;        
+    }
+    if ($logoutConfirmed) {
+      $player->verifySource($source);
+    }
+    $player->logoutDate = $logoutDate;
+    $playtime = new Playtime();
+    $playtime->fromPlayer($player);
+    $playtime->logoutConfirmed = $logoutConfirmed;
+    $player->playedDay = $player->playedDay + $playtime->getDuration();
+    $this->getDatabase()->savePlaytime($playtime);
+  }
+  
+  public function respondRemaintingTime($remaining) {
+    if ($remaining == 0) {
+      respond('908 Playtime Over', $remaining);
+    } else {
+      respond('200 OK', $remaining);
+    }
+  }
+
+  public function respond($status, $body) {
+    header('HTTP/1.1 ' . $status);
+    echo $body;
+  }
 }
 ?>

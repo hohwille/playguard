@@ -1,0 +1,10 @@
+:toc:
+toc::[]
+
+= playguard SQL for MySQL Schema Upgrades
+
+== English
+Here you can find SQL scripts to upgrade your MySQL Database from a previouse Playguard version to a newer version in case the schema changed.
+
+== German
+Hier finden Sie SQL Skripte um Ihre MySQL Datenbank von einer vorigen Playguard Version auf eine neuere Version zu aktualisieren, falls sich das Schema geändert hat.

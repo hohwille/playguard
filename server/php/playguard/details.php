@@ -3,15 +3,17 @@ include('./classes/Main.php');
 $main = new Main();
 $login = $_GET['login'];
 $player = $main->getPlayer($login);
+$monday = Time::getMondayOfThisWeek()->getTimestamp();
+$sunday = Time::getSundayOfThisWeek()->getTimestamp();
+$end = $sunday;
 $start = $_GET['start'];
 if ($start > 0) {
-  $day = Time::getDay($start);
+  if ($_GET['end'] > 0) {
+    $end = $_GET['end'];
+  }
 } else {
-  $day = Time::getMondayOfThisWeek();
+  $start = $monday;
 }
-$start = $day->getTimestamp();
-$day->add(new DateInterval('P7D'));
-$end = $day->getTimestamp();
 $playdays = $main->getDatabase()->getPlaydays($player->login, $start, $end);
 ?>
 <!doctype html>
@@ -23,13 +25,13 @@ $playdays = $main->getDatabase()->getPlaydays($player->login, $start, $end);
 </head>
 <body>
 <h1><?php echo LABEL_PLAYTIME_DETAILS . ' (' . $player->login . ')' ?></h1>
-<h2><?php echo LABEL_TODAY ?></h2>
+<h2><?php echo LABEL_TODAY . ' (' . date('Y-m-d') . ')' ?></h2>
 <label><?php echo LABEL_REMAINING ?>:</label> <?php echo Time::formatSeconds($player->getRest()) ?><br>
 <label><?php echo LABEL_PLAYED ?>:</label> <?php echo Time::formatSeconds($player->getPlayedToday()) ?>/<?php echo Time::formatSeconds($player->getMaxToday()) ?><br>
-<h2><?php echo LABEL_THIS_WEEK ?></h2>
+<h2><?php echo LABEL_THIS_WEEK . ' (' . Time::formatDate($monday) . ' - ' . Time::formatDate($sunday) . ')' ?></h2>
 <label><?php echo LABEL_REMAINING ?>:</label> <?php echo Time::formatSeconds($player->getRestThisWeek()) ?><br>
 <label><?php echo LABEL_PLAYED ?>:</label> <?php echo Time::formatSeconds($player->getPlayedThisWeek()) ?>/<?php echo Time::formatSeconds($player->getMaxThisWeek()) ?><br>
-<h2><?php echo LABEL_HISTORY . ' (' . Time::formatDate($start) . '-' . Time::formatDate($end) . ')' ?></h2>
+<h2><?php echo LABEL_HISTORY . ' (' . Time::formatDate($start) . ' - ' . Time::formatDate($end) . ')' ?></h2>
 <table>
 <thead>
 <tr>
@@ -57,7 +59,7 @@ foreach($playdays->days as $playday) { ?>
   } ?>
 <tr>
   <td><?php echo LABEL_TOTAL ?></td>
-  <td><?php echo Time::formatSeconds($playtime->total) ?></td>
+  <td><?php echo Time::formatSeconds($playday->total) ?></td>
   <td>-</td>
   <td>-</td>
   <td>-</td>
@@ -65,6 +67,7 @@ foreach($playdays->days as $playday) { ?>
 } ?>
 </tbody>
 </table>
+<label><?php echo LABEL_TOTAL ?>:</label> <?php echo Time::formatSeconds($playdays->total) ?><br>
 </body>
 </html>
 
