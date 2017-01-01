@@ -1,0 +1,40 @@
+:toc:
+toc::[]
+
+= Playguard Server Anwendung
+
+== English
+The Playguard server application is bunch of PHP scripts that you install on your server. For details read the instructions of the link:..[Playguard server] first.
+
+=== Prerequisites
+You need to have a web-server such as Apache httpd with PHP (at least version `5.5`) up and running.
+Further you need to have http://php.net/manual/de/book.mysqli.php[mysqli] support for PHP (I would have used http://php.net/manual/de/book.pdo.php[PDO] for database access but it did not work on my QNAP).
+To properly use Playguard you need to have MySQL up and running and do the link:../mysql/setup[Playguard Database Setup].
+
+=== Setup
+In order to setup the Playguard server application all you need to do is  follow these simple steps:
+
+* Copy the entire link:playguard[] folder form this directory to your server into the web location of your PHP server (on my QNAP to `/share/HDA_DATA/Web/`).
+* Copy the file link:playguard/config/config.template.php[config/config.template.php] to `config/config.php` and customize it to your needs. At least you have to fill in the password of the MySQL playguard user (see link:../mysql/setup[Playguard Database Setup]).
+* Open the overview page of playguard in your browser. This is the URL of your PHP server followed by `/playguard/index.php` (e.g. something like  http://myserver:8080/playguard or https://myserver/playguard). If all works fine you shall now see an overview page with the users you added in your Playguard database.
+* In order to generate the hashes for the passwords of your users you can open `/playguard/hash.php` in your browser. This simple and stupid utility can generate the hash for a password of your choice.
+* In order to administrate your users you can open `/playguard/admin.php`. Here you can create new users, change their passwords or their playing time limits. To access this page you have to authenticate with an administrator account that you have to create in advance via MySQL (see link:../mysql/setup[Playguard Database Setup]) in combination with the above password hash utility.
+* If you want to do further testing, you can simulate events by opening `/playguard/event.php?cmd=login&source=laptop` (just an example to simulate a login from laptop). Here you are promted for the credentials of the account for which the playing time shall be tracked. For the event command (`cmd` URL parameter) you can provide `login`, `confirm`, or `logout`. The source can be an arbitrary computer name (has to consist of latin letters, digits, hyphens and or dots).
+
+== Deutsch
+Die Playguard Server Anwendung ist eine Sammlung von PHP Skripten, welche Sie auf Ihren Server installieren. Für weitere Details lesen Sie zuerst die Anleitung zum link:..[Playguard server].
+
+=== Voraussetzungen
+Sie benötigen einen funktionierenden Web-Server wie Apache httpd mit PHP (mindestens Version `5.5`).
+Des Weiteren benötigen Sie http://php.net/manual/de/book.mysqli.php[mysqli] Unterstützung für PHP (Ich hätte http://php.net/manual/de/book.pdo.php[PDO] für den Datenbank-Zugriff verwendet, aber auf meinem QNAP Server funktioniert das nicht).
+Um Playguard ordentlich verwenden zu können, müssen Sie MySQL am Laufen haben und die link:../mysql/setup[Playguard Databank aufsetzten].
+
+=== Aufsetzten
+Um die Playguard Server Anwendung aufzusetzten, müssen sie nur die folgenden einfachen Schritte befolgen:
+
+* Kopieren Sie das gesamte link:playguard[] Verzeichnis aus diesem Ordner auf Ihren Server in das Web-Verzeichnis Ihres PHP-Servers (auf meiner QNAP nach `/share/HDA_DATA/Web/`).
+* Kopieren Sie dort die Datei  link:playguard/config/config.template.php[config/config.template.php] nach `config/config.php` und passen Sie diese an Ihren Bedarf an. Sie müssen mindestens das Password des MySQL Playguard Nutzers (siehe link:../mysql/setup[Playguard Datenbank aufsetzen]) einfügen.
+* Öffnen Sie die Übersichtsseite von Playguard in Ihrem Browser. Dies ist die URL Ihres PHP Servers gefolgt von `/playguard/index.php` (z.B. soetwas wie  http://myserver:8080/playguard oder https://myserver/playguard). Wenn alles korrekt funktioniert, sollten Sie nun die Übersichtsseite mit den Nutzern sehen, welche Sie in Ihrer Playguard Datenbank eingerichtet haben.
+* Um die Hashes für die Passwörter Ihrer Nutzer zu generieren, können Sie  `/playguard/hash.php` im Browser öffnen. Dieses einfache und dumme Werkzeug  kann den Hash für ein Passwort Ihrer Wahl generieren.
+* Um Ihre Playguard Nutzer zu administrieren, können Sie `/playguard/admin.php` im Browser öffnen. Hier können Sie neue Nutzer anlegen, ihre Passwörter oder ihre Spielzeit-Beschränkungen ändern. Um auf diese Seite zuzugreifen, müssen Sie sich mit einem Administrator-Account anmelden, welchen Sie zuvor via MySQL (siehe link:../mysql/setup[Playguard Datenbank aufsetzten]) in Verbindung mit dem obigen Passwort Hash Werkzeug erstellen müssen.
+* Falls Sie weitere Tests durchführen möchten, können Sie Ereignisse simulieren, in dem Sie `/playguard/event.php?cmd=login&source=laptop` im Browser öffnen (der URL Pfad ist nur ein Beispiel um einen Login vom Rechner names `laptop` zu simulieren). Hier werden Sie nach Zugangsdaten des Accounts gefragt, für den die Spielzeit erfasst werden soll. Für das Ereignis Kommando (`cmd` URL Parameter) können Sie `login`, `confirm`, oder `logout` eingeben. Die Quelle (`source` URL Parameter) können Sie einen beliebigen Computernamen angeben (muss aus Lateinischen Buchstaben, Ziffern, Minuszeichen und/oder Punkten bestehen).

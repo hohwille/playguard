@@ -34,7 +34,7 @@ You need to enter your personal password from the step before.
 connect playguard;
 
 .. Paste the SQL from link:002-CreateSchema.sql[].
-.. Customize the SQL from link:003-ExampleData.sql[] to your personal needs and paste it.
+.. Create a copy of the SQL from link:003-ExampleData.sql[] and customize it to your personal needs. The passwords of the users need to be hashed. You can install the link:../../php[Playguard Server Application] and open `hash.php`  in your browser to generate the hash (required at least for the administrator account). Finally paste and submit it to mysql.
 .. Exit mysql.
 
 == German
@@ -68,5 +68,5 @@ Das persönliche Passwort aus dem Schritt davor eingeben.
 connect playguard;
 
 .. Das SQL aus link:002-CreateSchema.sql[] pasten.
-.. Das SQL aus link:003-ExampleData.sql[] öffnen, an den persönlichen Bedarf anpassen und dann pasten.
+.. Eine Kopie des SQL aus link:003-ExampleData.sql[] erzeugen und an den persönlichen Bedarf anpassen. Die Passwörter der Nutzer müssen gehashed werden. Sie können die link:../../php[Playguard Server Anwendung] installieren und `hash.php` in Ihrem Browser öffnen um den Hash zu einem Passwort zu generieren (wird zumindest für den Administrator-Account benötigt). Schließlich das SQL in Mysql pasten und ausführen.
 .. Zuletzt mysql beenden.
