@@ -31,8 +31,13 @@ class Playtime {
   }
   
   function getDuration() {
+    global $config;
     if ($this->duration == NULL) {
-      $this->duration = $this->logoutDate - $this->loginDate;
+      $duration = $this->logoutDate - $this->loginDate - $config['loginLogoutDelay'];
+      if ($duration <= 0) {
+        $duration = 1;
+      }
+      $this->duration = $duration;
     }
     return $this->duration;
   }
