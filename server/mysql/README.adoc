@@ -1,0 +1,21 @@
+:toc:
+toc::[]
+
+= playguard MySQL
+
+== English
+Here you can find SQL scripts of the link:../[Playguard server] for https://www.mysql.com/[MySQL]. Playguard is developed for and tested  with MySQL (because it is most commonly available not because its quality).
+You can adopt playguard for other databases but this will also require customizations of the link:../php/[Playguard server code].
+Here you will find the following folders:
+
+* link:setup[] with SQL scripts and instructions to setup the Playguard database with MySQL.
+* link:upgrade[] with SQL scripts and instructions to upgrade your database from an earlier version of Playguard with MySQL.
+
+== German
+Hier finden Sie SQL Skripte des link:../[Playguard Servers] für https://www.mysql.com/[MySQL]. Playguard is für MySQL entwickelt und damit getestet (weil dies am weitesten verbreitet ist und nicht wegen seiner Qualität).
+Sie können Playguard auch für andere Datenbanken adaptieren aber dann müssen Sie auch den link:../php/[Playguard Server Code] entsprechend anpassen.
+Hier finden Sie die folgenden Ordner:
+
+* link:setup[] mit SQL Skripten und Anleitung zum Aufsetzten der Playguard Datenbank mit MySQL.
+* link:upgrade[] mit SQL Skripten und Anleitung zum Upgraden Ihrer Datenbank von einer früheren Version von Playguard mit MySQL.
+

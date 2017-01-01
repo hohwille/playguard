@@ -1,0 +1,72 @@
+:toc:
+toc::[]
+
+= playguard MySQL Setup
+
+== English
+Here you can find SQL scripts to setup the database. Playguard is developed for and tested  with MySQL (because it is most commonly available not because its quality).
+You can adopt playguard for other databases but this will also require customizations of the server side code.
+
+=== Setup
+To setup your MySQL database follow these steps (e.g. on QNap NAS you will find it in `/mnt/ext/opt/mysql`).
+
+. Create new `playguard` database: 
+[source,bash]
+mysqladmin -u root create playguard -p
++
+You need to enter your mysql root password.
+. Create new `playguard`  user:
++
+[source,bash]
+mysql -u root -p
++
+You need to enter your mysql root password.
++
+Paste the SQL from link:001-CreateUser.sql[] with your personal password filled in (that you also need to configure in `config.php`) and then exit mysql.
+. Login as `playguard` user and create schema and data:
++
+[source,bash]
+mysql -u playguard -p
++
+You need to enter your personal password from the step before.
++
+[source,bash]
+connect playguard;
+
+.. Paste the SQL from link:002-CreateSchema.sql[].
+.. Customize the SQL from link:003-ExampleData.sql[] to your personal needs and paste it.
+.. Exit mysql.
+
+== German
+Hier finden Sie SQL Skripte um die Datenbank aufzusetzten. Playguard is für MySQL entwickelt und damit getestet (weil dies am weitesten verbreitet ist und nicht wegen seiner Qualität).
+Sie können Playguard auch für andere Datenbanken adaptieren aber dann müssen Sie auch den Server-seitigen Code entsprechend anpassen.
+
+=== Aufsetzten
+Um Ihre MySQL Datenbank für Playguard aufzusetzen, folgen Sie diesen Schritten (z.B.auf einem QNap NAS finden Sie MySQL unter `/mnt/ext/opt/mysql`).
+
+. Neue `playguard` Datenbank erstellen: 
+[source,bash]
+mysqladmin -u root create playguard -p
++
+Das mysql root Password eingeben.
+. Neuen `playguard` DB-Nutzer erstellen:
++
+[source,bash]
+mysql -u root -p
++
+Das mysql root Password eingeben.
++
+Das SQL aus link:001-CreateUser.sql[] öffnen, Ihr persönliches Passwort einsetzen (welches auch in `config.php` konfiguriert werden muss) und das SQL in mysql pasten. Dann mysql beenden.
+. Als `playguard` DB-Nutzer einloggen, dann Schema und Daten einspielen:
++
+[source,bash]
+mysql -u playguard -p
++
+Das persönliche Passwort aus dem Schritt davor eingeben.
++
+[source,bash]
+connect playguard;
+
+.. Das SQL aus link:002-CreateSchema.sql[] pasten.
+.. Das SQL aus link:003-ExampleData.sql[] öffnen, an den persönlichen Bedarf anpassen und dann pasten.
+.. Zuletzt mysql beenden.

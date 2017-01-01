@@ -1,0 +1,45 @@
+:toc:
+toc::[]
+
+= Playguard Server
+
+== English
+The Playguard server is an application that manages the guarded accounts and their time for all guarded devices in your home network. This allows to track and limit the computer usage time accross multiple devices (laptop, desktop PC, tablet, etc.).
+
+Therefore, a Playguard link:../client[client] will send events for login and logout of a guarded user from the device. So assuming you have your Playguard server available via HTTPS on `server.local.net` the client will send an HTTP GET request for a login to `https://server.local.net/playguard/event.php?cmd=login&source=device-name`. In order to detect the guarded user and to prevent missuse the events (`event.php`) are protected via basic authentication. The credentials for each playguard user should be keept secret and shall not even be known to the guarded users. They have to be configured in a central configuration on each link:../client[client] (only visible for `root` or `admin`).
+As response to an event the Playguard server will respond the remaining time for the user in seconds. The client can then start a task that will force a logout of the user from the device automatically after that time elapsed. 
+
+A potential problem of this approach is that in case a device might crash  the server will not receive a logout event and the user is still considered as "logged-in". As a solution Playguard will auto-logout the user after a specific penalty delay that can be configured. To prevent missuse the Playguard server also tracks `confirm` events that can be send from the client periodically (e.g. every 15 minutes). Then if a logout has been missed and a new login is received, the penalty delay is added to the last confirm time. The minimum of that time and the current (login) time are used as logout time.
+
+For transparency the Playguard server displays the used and remaining time of all guarded users. By clicking on a user you can see the history of the times from the received events for an entire week.
+
+When choosing Playguard, you need to be aware that the approach implies that guarded users can not login anymore if your local network ([W]LAN) or your Playguard server is down.
+
+=== Implementation and Requirements
+The implementation of the Playguard server is based on PHP and MySQL. These techniques are very painful for developers but are choosen because they are most commonly available. Also PHP and Apache httpd require quite little resources (e.g. compared to Java and Tomcat). Hence, with this choice the Playguard server can be easily installed on arbitrary (and limited) devices such as a NAS (I am using a good old QNap TS-219P II) or even a raspberry pi.
+
+=== Setup
+In order to setup your Playguard server, you need to follow these steps:
+
+* link:mysql/setup[Setup a Playguard DB in MySQL]
+* link:php[Setup the Playguard Server with PHP]
+
+== German
+Der Playguard Server ist eine Anwendung, welche die bewachten Accounts und ihre Zeiten für alle bewachten Geräte in Ihrem Heimnetzwerk verwaltet. Dies ermöglicht es, die Computer-Nutzungszeiten übergreifend für mehrere Geräde (Laptop, Desktop PC, Tablet, etc.) zu verfolgen und zu beschränken.
+
+Dazu sendet ein a Playguard link:../client[Client] Ereignisse für Login und Logout eines bewachten Nutzers von dem Gerät. Angenommen Sie haben Ihren Playguard Server via HTTPS auf `server.local.net` verfügbar dann sendet der Client eine HTTP GET Anfrage zu einem Login an `https://server.local.net/playguard/event.php?cmd=login&source=device-name`. Um den bewachten Nutzer zu erkennen und Missbrauch zu verhindern, sind die Ereignisse (`event.php`) mittels Basic-Authentication geschützt. Die Passwörter für die bewachten Nutzer sollten sicher verwart werden und nicht einmal den bewachten Nutzern bekannt sein. Sie müssen in einer zentralen Konfiguration auf jedem link:../client[Client] (nur sichtbar für `root` oder `admin`) konfiguriert sein. Als Antwort auf ein Ereignis sendet der Playguard Server die verbleibende Zeit des Nutzers in Sekunden. Der Client kann dann einen Task starten, der den Logout des Nutzers auf dem Gerät automatisch erzwingt, nachdem die Zeit abgelaufen ist.
+
+Ein potentielles Problem dieses Ansatzes ist, dass falls ein Gerät abstürzt der Server kein Logut-Ereignis empfängt und der Nutzer immer noch als "eingeloggt" betrachtet wird. Als Lösung loggt Playguard den Nutzer nach einer konfigurierbaren Straf-Zeit automatisch aus. Um Missbrauch zu unterbinden, zeichnet der Server Bestätigungsereignisse (`confirm` event) auf, die periotisch vom Client gesendet werden können (z.B. alle 15 Minuten). Falls ein Logout verpasst und ein neuer Login empfangen wurde, wird die Straf-Zeit zum Zeitpunkt der letzten Bestätigung addiert. Das Minimum dieser Zeit und der aktuellen (Login-)Zeit wird als Logout-Zeit verwendet.
+
+Zur Transparenz listet der Playguard Server für alle bewachten Nutzer die genutzte und verbleibende Zeit auf. Durch einen Klick auf den Nutzer kann die Historie aller Zeiten der empfangenen Ereignisse für eine ganze Woche eingesehen werden.
+
+Wenn Sie sich für Playguard entscheiden, sollte Ihnen bewust sein, dass der Ansatz impliziert, dass alle bewachten Nutzer sich nicht mehr anmelden können, wenn Ihr lokale Netzwerk ([W]LAN) oder Ihr Playguard Server nicht verfügbar ist.
+
+=== Implementierung und Anforderungen
+Die Implementierung des Playguard Servers basiert auf PHP und MySQL. Diese Technologien sind sehr schmerzhaft bzw. schrecklich für Entwickler wurden aber ausgewählt, da sie die größte Verbreitung haben. Zudem benötigt PHP and Apache httpd realtive geringe Ressourcen (z.B. im Vergleich zu Java und Tomcat). Daher kann der Playguard Server mit dieser Wahl einfach auf diversen (und beschränkten) Geräten wie einem NAS (Ich verwende ein gutes altes QNap TS-219P II) oder sogar einem Raspberry Pi installiert werden.
+
+=== Aufsetzten
+Um Ihren Playguard Server aufsetzten, müssen Sie folgende Schritte befolgen:
+
+* link:mysql/setup[Aufsetzten einer Playguard DB in MySQL]
+* link:php[Aufsetzen des Playguard Servers mit PHP]
