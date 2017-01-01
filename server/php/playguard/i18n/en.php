@@ -22,4 +22,7 @@ define('LABEL_IP', 'IP-Address');
 define('LABEL_TOTAL', 'Total');
 define('LABEL_FROM', 'From');
 define('LABEL_TO', 'To');
+define('LABEL_PASSWORD', 'Password');
+define('LABEL_HASH', 'Hash');
+define('LABEL_SUBMIT', 'Submit');
 ?>
