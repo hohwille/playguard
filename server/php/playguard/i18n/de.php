@@ -24,5 +24,5 @@ define('LABEL_FROM', 'Von');
 define('LABEL_TO', 'Bis');
 define('LABEL_PASSWORD', 'Passwort');
 define('LABEL_HASH', 'Hash');
-define('LABEL_SUBMIT', 'Bestätigen');
+define('LABEL_SUBMIT', 'BestÃ¤tigen');
 ?>
