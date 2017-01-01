@@ -11,7 +11,7 @@ Here you will find the following folders:
 * link:setup[] with SQL scripts and instructions to setup the Playguard database with MySQL.
 * link:upgrade[] with SQL scripts and instructions to upgrade your database from an earlier version of Playguard with MySQL.
 
-== German
+== Deutsch
 Hier finden Sie SQL Skripte des link:../[Playguard Servers] für https://www.mysql.com/[MySQL]. Playguard is für MySQL entwickelt und damit getestet (weil dies am weitesten verbreitet ist und nicht wegen seiner Qualität).
 Sie können Playguard auch für andere Datenbanken adaptieren aber dann müssen Sie auch den link:../php/[Playguard Server Code] entsprechend anpassen.
 Hier finden Sie die folgenden Ordner:

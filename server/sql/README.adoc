@@ -37,7 +37,7 @@ connect playguard;
 .. Customize the SQL from link:003-ExampleData.sql[] to your personal needs and paste it.
 .. Exit mysql.
 
-== German
+== Deutsch
 Hier finden Sie SQL Skripte um die Datenbank aufzusetzten. Playguard is für MySQL entwickelt und damit getestet (weil dies am weitesten verbreitet ist und nicht wegen seiner Qualität).
 Sie können Playguard auch für andere Datenbanken adaptieren aber dann müssen Sie auch den Server-seitigen Code entsprechend anpassen.
 

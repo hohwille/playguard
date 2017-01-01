@@ -24,7 +24,7 @@ In order to setup your Playguard server, you need to follow these steps:
 * link:mysql/setup[Setup a Playguard DB in MySQL]
 * link:php[Setup the Playguard Server with PHP]
 
-== German
+== Deutsch
 Der Playguard Server ist eine Anwendung, welche die bewachten Accounts und ihre Zeiten für alle bewachten Geräte in Ihrem Heimnetzwerk verwaltet. Dies ermöglicht es, die Computer-Nutzungszeiten übergreifend für mehrere Geräde (Laptop, Desktop PC, Tablet, etc.) zu verfolgen und zu beschränken.
 
 Dazu sendet ein a Playguard link:../client[Client] Ereignisse für Login und Logout eines bewachten Nutzers von dem Gerät. Angenommen Sie haben Ihren Playguard Server via HTTPS auf `server.local.net` verfügbar dann sendet der Client eine HTTP GET Anfrage zu einem Login an `https://server.local.net/playguard/event.php?cmd=login&source=device-name`. Um den bewachten Nutzer zu erkennen und Missbrauch zu verhindern, sind die Ereignisse (`event.php`) mittels Basic-Authentication geschützt. Die Passwörter für die bewachten Nutzer sollten sicher verwart werden und nicht einmal den bewachten Nutzern bekannt sein. Sie müssen in einer zentralen Konfiguration auf jedem link:../client[Client] (nur sichtbar für `root` oder `admin`) konfiguriert sein. Als Antwort auf ein Ereignis sendet der Playguard Server die verbleibende Zeit des Nutzers in Sekunden. Der Client kann dann einen Task starten, der den Logout des Nutzers auf dem Gerät automatisch erzwingt, nachdem die Zeit abgelaufen ist.

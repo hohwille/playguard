@@ -14,7 +14,7 @@ It offers the following features:
 * A link:../../tree/master/server[server side solution] that manages the guarded accounts and their time for all guarded devices in your home network.
 * link:../../tree/master/client[Client side solutions] for different operating systems that notify the server on login and logout, lock users if time it out, etc.
 
-== German
+== Deutsch
 Playguard ist eine software Lösung, um die Computer-Nutzungszeit für Kinder zu beschränken. Es bietet folgende Funktionen:
 
 * Verfolgung der Computer-Nutzungszeiten der bewachten Nutzer vom Login (Anmeldung am PC) bis zum Logout (Abmeldung).
