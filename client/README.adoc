@@ -1,0 +1,20 @@
+:toc:
+toc::[]
+
+= Playguard Client
+
+== English
+The Playguard client is a simple set of scripts and configuration to track the usage of guarded accounts on a guarded device in your home network. It will notify the link:../server[Playguard server] via events of each login and logout. Further, it will force a logout of the user from the device automatically after the available time is elapsed. If no time is left, the login will fail.
+
+Here you will find the following folders that earch represent a Playguard client for a particular operating system. Each of them also contains instructions how to setup the client on the device:
+
+* link:linux[] for GNU/Linux and Unix devices
+* link:windows[] for Windows devices
+
+== Deutsch
+Der Playguard Client ist eine einfache Sammlung von Skripten und Konfiguration, um die Nutzung der bewachten Accounts auf einem bewachten Gerät in Ihrem Heimnetzwerk zu verfolgen. Der Client wird den link:../server[Playguard Server] mittels Ereignissen über jeden Login und Logout informieren. Darüber hinaus wird er das Abmelden des Nutzers vom Gerät automatisch erzwingen, nachdem die verfügbare Zeit abgelaufen ist. Wenn keine Zeit mehr übrig ist, lässt er die Anmeldung des Nutzers scheitern.
+
+Hier finden Sie die folgenden Ordner, welche jeweils einen Playguard Client für ein bestimmtes Betriebssystem representieren. Jeder Ordner enthält zudem eine Anleitung, wie der Client auf dem Gerät eingerichtet wird:
+
+* link:linux[] für GNU/Linux und Unix Geräte
+* link:windows[] für Windows Geräte
