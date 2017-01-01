@@ -30,6 +30,8 @@ class Database {
     while($row = $result->fetch_object()) {
       $player = new Player();
       $player->login = $row->login;
+      $player->email = $row->email;
+      $player->administrator = $row->administrator;
       $player->maxPerDay = $row->max_per_day;
       $player->maxPerWeek = $row->max_per_week;
       $player->extraDay = Time::getTimestamp($row->extra_day);

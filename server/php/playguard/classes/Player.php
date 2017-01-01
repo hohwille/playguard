@@ -3,6 +3,8 @@ include './classes/Time.php';
 
 class Player {
   public $login;
+  public $email;
+  public $administrator;
   public $maxPerDay;
   public $maxPerWeek;
   public $extraDay;

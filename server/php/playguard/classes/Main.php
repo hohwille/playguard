@@ -70,6 +70,15 @@ class Main {
     }
     return $player;
   }
+  
+  public function getAdminLoggedIn(){
+    $player = $this->getPlayerLoggedIn();
+    if (!$player->administrator) {
+      $this->respond('403 Forbidden', 'Administrator permission required');
+      exit;
+    }
+    return $player;
+  }
 
   public function login($player, $loginDate, $source) {
     global $config;
