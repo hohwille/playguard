@@ -6,7 +6,7 @@ class Time {
   }
 
   public static function formatSeconds($seconds) {
-    if (!$seconds) {
+    if ($seconds == NULL) {
       return '-';
     }
     $t = round($seconds);

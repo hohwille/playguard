@@ -72,10 +72,11 @@ class Main {
   }
 
   public function login($player, $loginDate, $source) {
+    global $config;
     if (($player->loginDate != NULL) && ($player->logoutDate == NULL)) { // implicit force logout (e.g. from new login)?
       $logoutMin = $player->confirmDate + $config['reloginDelay'];
       if ($loginDate < $logoutMin) {
-        respond('903 Already Logged-In', 0);
+        $this->respond('903 Already Logged-In', 0);
         exit;
       }
       // auto-logout
@@ -119,9 +120,8 @@ class Main {
   }
   
   private function doLogout($player, $logoutDate, $source, $logoutConfirmed) {
-    global $config;
     if ($player->logoutDate != NULL) { // already logged out?
-      respond('904 Already Logged-Out', 0);
+      $this->respond('904 Already Logged-Out', 0);
       exit;        
     }
     if ($logoutConfirmed) {
@@ -137,9 +137,9 @@ class Main {
   
   public function respondRemaintingTime($remaining) {
     if ($remaining == 0) {
-      respond('908 Playtime Over', $remaining);
+      $this->respond('908 Playtime Over', $remaining);
     } else {
-      respond('200 OK', $remaining);
+      $this->respond('200 OK', $remaining);
     }
   }
 

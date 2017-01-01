@@ -54,11 +54,12 @@ class Player {
   }
 
   function getPlayedToday() {
+    global $config;
     if (Time::isToday($this->loginDate)) {
       $played = 0;
       if ($this->logoutDate == NULL) {
-        $played = (time() - $this->loginDate);
-        if ($played < 0) { // should actually never happen...
+        $played = (time() - $this->loginDate - $config['loginLogoutDelay']);
+        if ($played < 0) {
           $played = 0;
         }
       }
