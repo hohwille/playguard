@@ -18,3 +18,43 @@ td.orange {
 td.red {
   background-color: red
 }
+form  {
+}
+p {
+  vertical-align: middle;
+}
+label {
+  display: inline-block;
+  text-align: right;
+  width: 6em;
+}
+label:after {
+  content: ": "
+}
+select {
+  padding: 2px;
+  width: 16.4em;
+}
+textarea {
+  padding: 2px;
+  width: 16em;
+  height: 5em;
+}
+input {
+  padding: 2px;
+  width: 16em;
+}
+input:read-only {
+  background-color: #cccccc;
+}
+input:required {
+  border-color: #995555;
+  border-width: 2px;
+}
+input:invalid {
+  background-color: #ffdddd;
+}
+button {
+  margin-left: 4px;
+  margin-right: 4px;
+}

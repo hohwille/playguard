@@ -5,12 +5,52 @@ class Time {
     return (date('H') * 60 + date('i')) * 60 + date('s');
   }
 
-  public static function formatSeconds($seconds) {
+  public static function formatSeconds($seconds, $default = '-') {
     if ($seconds == NULL) {
-      return '-';
+      return $default;
     }
     $t = round($seconds);
     return sprintf('%02d:%02d:%02d', ($t/3600),($t/60%60), $t%60);
+  }
+  
+  public static function parseSegment($segment, $max = 60) {
+    if (ctype_digit($segment)) {
+      $result = intval($segment);
+      if ($result <= $max) {
+        return $result;
+      }
+    }
+    exit('Illegal duration segment: ' . $segment);
+  }
+  
+  public static function parseSegmentHours($hours, $max = 168) {
+      
+    return Time::parseSegment($hours, $max) * 3600;
+  }
+  
+  public static function parseSegmentMinutes($minutes) {
+      
+    return Time::parseSegment($minutes) * 60;
+  }
+  
+  public static function parseSegmentSeconds($seconds) {
+      
+    return Time::parseSegment($seconds);
+  }
+  
+  public static function parseSeconds($duration) {
+    if ($duration == NULL) {
+      return NULL;
+    }
+    $segments = explode(':', $duration);
+    if ((sizeof($segments) >= 2) && (sizeof($segments) <= 3)) {
+      $seconds = Time::parseSegmentHours($segments[0]) + Time::parseSegmentMinutes($segments[1]);
+      if (sizeof($segments) == 3) {
+        $seconds = $seconds + Time::parseSegmentSeconds($segments[2]);
+      }
+      return $seconds;
+    }
+    exit('Illegal duration: ' . $duration);
   }
 
   public static function getTimestamp($dateString) {
@@ -19,22 +59,30 @@ class Time {
     }
     return strtotime($dateString);
   }
+
+  public static function parseDate($date) {
+    if ($date == NULL) {
+      return NULL;
+    }
+    $result = DateTime::createFromFormat('Y-m-d', $date);
+    return $result->getTimestamp();
+  }
   
-  public static function formatDate($timestamp) {
-    return Time::formatTimestamp($timestamp, 'Y-m-d');
+  public static function formatDate($timestamp, $default = '-') {
+    return Time::formatTimestamp($timestamp, 'Y-m-d', $default);
   }
 
-  public static function formatDateTime($timestamp) {
-    return Time::formatTimestamp($timestamp, 'Y-m-d H:i:s');
+  public static function formatDateTime($timestamp, $default = '-') {
+    return Time::formatTimestamp($timestamp, 'Y-m-d H:i:s', $default);
   }
 
-  public static function formatTime($timestamp) {
-    return Time::formatTimestamp($timestamp, 'H:i:s');
+  public static function formatTime($timestamp, $default = '-') {
+    return Time::formatTimestamp($timestamp, 'H:i:s', $default);
   }
 
-  public static function formatTimestamp($timestamp, $pattern) {
+  public static function formatTimestamp($timestamp, $pattern, $default = '-') {
     if ($timestamp == NULL) {
-      return '-';
+      return $default;
     }
     return date($pattern, $timestamp);
   }

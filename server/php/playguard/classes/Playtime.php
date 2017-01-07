@@ -41,6 +41,14 @@ class Playtime {
     }
     return $this->duration;
   }
+  
+  public function getLoginSource() {
+    return htmlspecialchars($this->loginSource);
+  }
+
+  public function getLoginIp() {
+    return htmlspecialchars($this->loginIp);
+  }
 }
 
 class Playday {

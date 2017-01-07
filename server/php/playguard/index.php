@@ -19,7 +19,7 @@ $players=$main->getPlayers();
   <th rowspan="2"><?php echo LABEL_PLAYER ?></th>
   <th colspan="3"><?php echo LABEL_TODAY ?></th>
   <th colspan="3"><?php echo LABEL_THIS_WEEK ?></th>
-  <th colspan="3"><?php echo LABEL_LAST_LOGIN ?></th>
+  <th colspan="4"><?php echo LABEL_LAST_LOGIN ?></th>
 </tr>
 <tr>
   <th><?php echo LABEL_REMAINING ?></th>
@@ -28,9 +28,10 @@ $players=$main->getPlayers();
   <th><?php echo LABEL_REMAINING ?></th>
   <th><?php echo LABEL_PLAYED ?></th>
   <th><?php echo LABEL_MAXIMUM ?></th>
-  <th><?php echo LABEL_DATE ?></th>
+  <th><?php echo LABEL_LOGIN ?></th>
   <th><?php echo LABEL_SOURCE ?></th>
   <th><?php echo LABEL_IP ?></th>  
+  <th><?php echo LABEL_LOGOUT ?></th>
 </tr>
 </thead>
 <tbody>
@@ -45,8 +46,9 @@ foreach($players as $player) { ?>
   <td><?php echo Time::formatSeconds($player->getPlayedThisWeek()) ?></td>
   <td><?php echo Time::formatSeconds($player->getMaxThisWeek()) ?></td>
   <td><?php echo Time::formatDateTime($player->loginDate) ?></td>
-  <td><?php echo $player->loginSource ?></td>
-  <td><?php echo $player->loginIp ?></td>
+  <td><?php echo $player->getLoginSource() ?></td>
+  <td><?php echo $player->getLoginIp() ?></td>
+  <td><?php echo Time::formatDateTime($player->logoutDate) ?></td>
 </tr><?php 
 } ?>
 </tbody>

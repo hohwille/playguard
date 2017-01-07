@@ -43,6 +43,31 @@ class Main {
     }
     return $player;
   }
+  
+  function savePlayer($player) {
+    $existing = $this->getPlayers()[$player->login];
+    if ($existing == NULL) {
+      $this->getDatabase()->createPlayer($player);
+    } else {
+      if ($player->email != $existing->email) {
+        $this->getDatabase()->updatePlayerEmail($player);
+      }
+      if (($player->maxPerDay != $existing->maxPerDay) || ($player->maxPerWeek != $existing->maxPerWeek)) {
+        $this->getDatabase()->updatePlayerQuota($player);
+      }
+      if (($player->extraDay != $existing->extraDay) || ($player->maxExtraDay != $existing->maxExtraDay) || ($player->maxExtraWeek != $existing->maxExtraWeek)) {
+        $this->getDatabase()->updatePlayerExtra($player);
+      }
+      if ($player->lockedUntil != $existing->lockedUntil) {
+        $this->getDatabase()->updatePlayerLock($player);
+      }
+    }
+  }
+  
+  function redirectToAdmin() {
+    $url = ($_SERVER['HTTPS'] ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI'])  . '/admin.php';
+    header('Location: ' . $url, true, 302);
+  }
 
   public static function authenticationRequired() {
     header('WWW-Authenticate: Basic realm="Playguard"');
@@ -74,7 +99,10 @@ class Main {
   public function getAdminLoggedIn(){
     $player = $this->getPlayerLoggedIn();
     if (!$player->administrator) {
-      $this->respond('403 Forbidden', 'Administrator permission required');
+      if ($_GET['relogin']) {
+        Main::authenticationRequired();        
+      }
+      $this->respond('403 Forbidden', '<a href="' . 'admin.php?relogin=true' . '">Administrator permission required</a>');
       exit;
     }
     return $player;
@@ -155,6 +183,30 @@ class Main {
   public function respond($status, $body) {
     header('HTTP/1.1 ' . $status);
     echo $body;
+  }
+  
+  public static function getString($name, $array, $default = NULL) {
+    $string = $array[$name];
+    $string = trim($string);
+    if (empty($string)) {
+      if ($default === NULL) {
+        exit('Missing required parameter: ' . $name);        
+      } else  {
+        return $default;
+      }
+    }
+    return $string;
+  }
+  
+  public static function parseEmail($email) {
+    if ($email == NULL) {
+      return NULL;
+    }
+    $email = trim($email);
+    if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
+      exit('Invalid Email: ' . $email);
+    }
+    return $email;
   }
 }
 ?>

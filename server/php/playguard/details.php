@@ -31,6 +31,7 @@ $playdays = $main->getDatabase()->getPlaydays($player->login, $start, $end);
 <h2><?php echo LABEL_THIS_WEEK . ' (' . Time::formatDate($monday) . ' - ' . Time::formatDate($sunday) . ')' ?></h2>
 <label><?php echo LABEL_REMAINING ?>:</label> <?php echo Time::formatSeconds($player->getRestThisWeek()) ?><br>
 <label><?php echo LABEL_PLAYED ?>:</label> <?php echo Time::formatSeconds($player->getPlayedThisWeek()) ?>/<?php echo Time::formatSeconds($player->getMaxThisWeek()) ?><br>
+<label><?php echo LABEL_COMMENT ?>:</label> <?php echo $player->getExtraComment() ?><br>
 <h2><?php echo LABEL_HISTORY . ' (' . Time::formatDate($start) . ' - ' . Time::formatDate($end) . ')' ?></h2>
 <table>
 <thead>
@@ -53,8 +54,8 @@ foreach($playdays->days as $playday) { ?>
   <td><?php echo Time::formatTime($playtime->loginDate) ?></td>
   <td><?php echo Time::formatSeconds($playtime->getDuration()) ?></td>
   <td><?php echo Time::formatTime($playtime->logoutDate) ?></td>
-  <td><?php echo $playtime->loginSource ?></td>
-  <td><?php echo $playtime->loginIp ?></td>
+  <td><?php echo $playtime->getLoginSource() ?></td>
+  <td><?php echo $playtime->getLoginIp() ?></td>
 </tr><?php 
   } ?>
 <tr>

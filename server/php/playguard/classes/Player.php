@@ -8,8 +8,9 @@ class Player {
   public $maxPerDay;
   public $maxPerWeek;
   public $extraDay;
-  public $maxExtraDay;
-  public $maxExtraWeek;
+  public $extraMaxPerDay;
+  public $extraMaxPerWeek;
+  public $extraComment;
   public $lockedUntil;
   public $loginSource;
   public $loginIp;
@@ -35,12 +36,19 @@ class Player {
     return Time::isThisWeek($this->extraDay);
   }
   
+  function getExtraComment() {
+    if ($this->isExtraWeek()) {
+      return htmlspecialchars($this->extraComment);
+    }
+    return '';
+  }
+  
   function getMaxToday() {
     if ($this->isLocked()) {
       return 0;
     }
-    if ($this->maxExtraDay && $this->isExtraDay()) {
-      return $this->maxExtraDay;
+    if ($this->extraMaxPerDay && $this->isExtraDay()) {
+      return $this->extraMaxPerDay;
     }
     return $this->maxPerDay;
   }
@@ -49,32 +57,36 @@ class Player {
     if ($this->isLocked()) {
       return 0;
     }
-    if ($this->maxExtraWeek && $this->isExtraWeek()) {
-      return $this->maxExtraWeek;
+    if ($this->extraMaxPerWeek && $this->isExtraWeek()) {
+      return $this->extraMaxPerWeek;
     }
     return $this->maxPerWeek;
   }
 
   function getPlayedToday() {
     global $config;
+    $played = 0;
     if (Time::isToday($this->loginDate)) {
-      $played = 0;
       if ($this->logoutDate == NULL) {
         $played = (time() - $this->loginDate - $config['loginLogoutDelay']);
         if ($played < 0) {
           $played = 0;
         }
       }
-      return $this->playedDay + $played;
+      $played = $played + $this->playedDay;
     }
-    return 0;
+    return $played;
   }
   
   function getPlayedThisWeek() {
+    $played = 0;
     if (Time::isThisWeek($this->loginDate)) {
-      return $this->playedWeek + $this->getPlayedToday();
+      $played = $this->playedWeek + $this->getPlayedToday();
+      if (!Time::isToday($this->loginDate)) {
+        $played = $played + $this->playedDay;
+      }
     }
-    return 0;
+    return $played;
   }
   
   function getRestToday() {
@@ -103,6 +115,14 @@ class Player {
       $rest = $restThisWeek;
     }
     return $rest;
+  }
+
+  public function getLoginSource() {
+    return htmlspecialchars($this->loginSource);
+  }
+
+  public function getLoginIp() {
+    return htmlspecialchars($this->loginIp);
   }
   
   public static function getPasswordHash($password) {

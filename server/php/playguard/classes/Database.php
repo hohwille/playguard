@@ -35,8 +35,9 @@ class Database {
       $player->maxPerDay = $row->max_per_day;
       $player->maxPerWeek = $row->max_per_week;
       $player->extraDay = Time::getTimestamp($row->extra_day);
-      $player->maxExtraDay = $row->max_extra_day;
-      $player->maxExtraWeek = $row->max_extra_week;
+      $player->extraMaxPerDay = $row->extra_max_per_day;
+      $player->extraMaxPerWeek = $row->extra_max_per_week;
+      $player->extraComment = $row->extra_comment;
       $player->lockedUntil = $row->locked_until;
       $player->loginSource = $row->login_source;
       $player->loginIp = $row->login_ip;
@@ -50,6 +51,26 @@ class Database {
     }
     $statement->close();
     return $players;
+  }
+  
+  function createPlayer($player) {
+    $statement = $this->mysqli->prepare('INSERT INTO Player (login, max_per_day, max_per_week VALUES (?, ?, ?)');
+    if (!$statement) {
+      $this->error();
+    }
+    $statement->bind_param('sii', $player->login, $player->maxPerDay, $player->maxPerWeek);
+    $statement->execute();
+    $statement->close();    
+  }
+  
+  function updatePlayerEmail($player) {
+    $statement = $this->mysqli->prepare('UPDATE Player SET email = ? WHERE login = ?');
+    if (!$statement) {
+      $this->error();
+    }
+    $statement->bind_param('ss', $player->email, $player->login);
+    $statement->execute();
+    $statement->close();
   }
   
   function updatePlayerPassword($player) {
@@ -73,14 +94,15 @@ class Database {
   }
 
   function updatePlayerExtra($player) {
-    $statement = $this->mysqli->prepare('UPDATE Player SET extra_day = FROM_UNIXTIME(?), max_extra_day = ?, max_extra_week = ? WHERE login = ?');
+    $statement = $this->mysqli->prepare('UPDATE Player SET extra_day = FROM_UNIXTIME(?), extra_max_per_day = ?, extra_max_per_week = ?, extra_commnet = ? WHERE login = ?');
     if (!$statement) {
       $this->error();
     }
-    $statement->bind_param('iiis', $player->extraDay, $player->maxExtraDay, $player->maxExtraWeek, $player->login);
+    $statement->bind_param('iiiss', $player->extraDay, $player->extraMaxPerDay, $player->extraMaxPerWeek, $player->extraComment, $player->login);
     $statement->execute();
     $statement->close();
-  }  
+  }
+
   function updatePlayerLoginData($player) {
     $statement = $this->mysqli->prepare('UPDATE Player SET login_date = FROM_UNIXTIME(?), login_source = ?, login_ip = ?, confirm_date = FROM_UNIXTIME(?), logout_date = FROM_UNIXTIME(?), played_day = ?, played_week = ? WHERE login = ?');
     if (!$statement) {
@@ -91,6 +113,15 @@ class Database {
     $statement->close();
   }
 
+  function updatePlayerLock($player) {
+    $statement = $this->mysqli->prepare('UPDATE Player SET locked_until = FROM_UNIXTIME(?) WHERE login = ?');
+    if (!$statement) {
+      $this->error();
+    }
+    $statement->bind_param('i', $player->lockedUntil, $player->login);
+    $statement->execute();
+    $statement->close();
+  }
   function getPlaydays($login, $start, $end) {
     $statement = $this->mysqli->prepare('SELECT * FROM Playtime WHERE login = ? AND login_date >= FROM_UNIXTIME(?) AND login_date <= FROM_UNIXTIME(?)');
     if ( !$statement ) {
