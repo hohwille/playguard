@@ -1,0 +1,35 @@
+#!/bin/bash
+#
+#	PAM_SERVICE	- the application that's invoking the PAM stack
+#	PAM_TYPE	- the module-type (e.g. auth,account,session,password)
+#	PAM_USER	- the user being authenticated into
+#	PAM_RUSER	- the remote user, the user invoking the application
+#	PAM_RHOST	- remote host
+#	PAM_TTY		- the controlling tty
+#	PAM_AUTHTOK	- password in readable text
+#
+if [ "$PAM_TYPE" == "session" ] && [ "$PAM_SERVICE" != "su" ] && [ "$PAM_SERVICE" != "sudo" ] && [ -n "$PAM_USER" ]
+then
+  source /etc/playguard/password.conf
+  pwd=${password[$PAM_USER]}
+  if [ -n "$pwd" ]
+  then
+    . /etc/playguard/playguard.conf
+    script=`basename $0`
+    if [ $script == "pam_script_ses_open" ]
+    then
+      command=login
+    elif [ $script == "pam_script_ses_close" ]
+    then
+      command=logout
+    fi
+    result=`curl -k -s -u $PAM_USER:$pwd $url/event.php?cmd=$command\&src=$source 2>&1`
+    if [ $? != 0 ]
+    then
+      echo "CURL failed for $PAM_USER: $result" >> /tmp/playguard.log
+      exit -1
+    fi
+  fi 
+fi
+# success
+exit 0

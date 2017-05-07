@@ -1,0 +1,95 @@
+:toc:
+toc::[]
+
+= Playguard Linux Client
+
+== English
+The Playguard Linux client is a link:..[Playguard client] for Linux. It is based on https://github.com/jeroennijhof/pam_script[pam-script].
+
+In order to setup the client on a linux computer follow these steps:
+
+* Install https://github.com/jeroennijhof/pam_script[pam-script] on your linux computer. For debian based systems (including Ubuntu) simply do:
+```
+sudo apt-get install libpam-script
+```
+* Copy the link:etc/playguard[playguard configuration templates] as `root` user to your `/etc` folder:
+```
+sudo cp -r path-to-playguard-git-clone/client/linux/etc/playguard /etc
+```
+* Ensure that only `root` can access the configuration:
+```
+chown go-rwx /etc/playguard
+```
+* Edit the link:etc/playguard/playguard.conf[] file as `root` user (e.g. `sudo vi /etc/playguard/playguard.conf`):
+```
+source=«name-of-your-computer-like-hostname»
+url=«URL-to-your-playguard-server»
+```
+* Edit the link:etc/playguard/password.conf[] file as `root` user (e.g. `sudo vi /etc/playguard/password.conf`):
+```
+declare -A password
+password[«user1»]=«playguard-server-password1»
+password[«user2»]=«playguard-server-password2»
+password[«user3»]=«playguard-server-password3»
+``` 
+The users (e.g. `«user1»`) have to be the linux login on your computer to observe by playguard and must be identical to the corresponding user on the link:../server[Playguard server]. Playguard will not interfere for users not listed here. It is recommended to have at least one admin user that is not observed by playguard so in case something is wrong (e.g. your Playguard server is down you can still login and e.g. temporary disable Playguard).
+
+* Copy the link:pam-script/playguard[] pam script as `root` to your pam-script `sysconfdir` (on ubuntu `/usr/share/libpam-scrip` on other systems maybe `/etc/pam-script`) and ensure correct permissions:
+```
+sudo cp path-to-playguard-git-clone/client/linux/pam-script/playguard /usr/share/libpam-scrip
+sudo chmod 700 /usr/share/libpam-scrip/playguard
+```
+* Activate the script for login and logout via `pam-script`:
+```
+cd /usr/share/libpam-scrip
+sudo ln -s playguard pam_script_ses_open
+sudo ln -s playguard pam_script_ses_close
+```
+* If you only have WIFI network on your linux computer ensure that the WIFI connection is https://askubuntu.com/questions/141553/how-to-enable-wireless-network-for-standard-users[available to all users]. Otherwise the network is not available during login and playguard will then fail and prevent the login.
+* Logout your current user and login as one of the observed users, wait 10 minutes and logout. Then go to the home page of your link:../server[Playguard server] and verify that the time was captured properly.
+
+== Deutsch
+Der Playguard Linux Client ist ein link:..[Playguard Client] für Linux. Er basiert auf  https://github.com/jeroennijhof/pam_script[pam-script].
+
+Um den Client auf einem Linux-Computer aufzusetzten sind folgende Schritte zu befolgen:
+
+* Installiere https://github.com/jeroennijhof/pam_script[pam-script] auf deinem Linux-Computer. Für Debian-basierte Systeme (inklusive Ubuntu) mache einfach folgendes:
+```
+sudo apt-get install libpam-script
+```
+* Kopiere die link:etc/playguard[Playguard Konfigurationstemplates] als `root` Nutzer in den `/etc` Ordner:
+```
+sudo cp -r path-to-playguard-git-clone/client/linux/etc/playguard /etc
+```
+* Stelle sicher, dass nur `root` die Konfiguration zugreifen kann:
+```
+chown 700 /etc/playguard
+```
+* Editiere die Datei link:etc/playguard/playguard.conf[] als `root` Nutzer (z.B. `sudo vi /etc/playguard/playguard.conf`):
+```
+source=«name-deines-computers-wie-hostname»
+url=«URL-zu-deinem-playguard-server»
+```
+* Editiere die Datei link:etc/playguard/password.conf[] als `root` Nutzer (z.B. `sudo vi /etc/playguard/password.conf`):
+```
+declare -A password
+password[«user1»]=«playguard-server-password1»
+password[«user2»]=«playguard-server-password2»
+password[«user3»]=«playguard-server-password3»
+``` 
+Die Nutzer (z.B. `«user1»`) müssen das Linux-Login auf deinem Linux-Computer sein, der mit Playguard überwacht werden soll, und müssen mit dem zugehörigen Nuzter auf dem link:../server[Playguard server] übereinstimmen. Playguard mischt sich nicht ein und lässt Nutzer in Ruhe, die hier nicht aufgeführt sind. Es wird empfohlen, mindestens einen Admin-Nutzer zu haben, der nicht von Playguard überwacht wird, falls etwas schief geht (z.B. wenn dein Playguard-Server nicht läuft kannst du dich dann noch damit einloggen und Playguard temporär deaktivieren).
+
+* Kopiere die link:pam-script/playguard[] PAM Skripte als `root` Nutzer in dein pam-script `sysconfdir`  Verzeichnis (unter Ubuntu `/usr/share/libpam-scrip`, auf anderen Systemen vermutlich `/etc/pam-script`) und sichere die korrekten Berechtigungen zu:
+```
+cd /usr/share/libpam-scrip
+sudo cp path-to-playguard-git-clone/client/linux/pam-script/playguard .
+sudo chmod 700 playguard
+```
+* Aktiviere das Skript für login und logout via `pam-script`:
+```
+cd /usr/share/libpam-scrip
+sudo ln -s playguard pam_script_ses_open
+sudo ln -s playguard pam_script_ses_close
+```
+* Wenn du nur WLAN Netzwerk auf deinem Linux-Computer hast, stelle sicher, dass die WLAN-Verbindung  https://askubuntu.com/questions/141553/how-to-enable-wireless-network-for-standard-users[für alle Nutzer verfügbar ist (available to all users)]. Andernfalls ist das Netzwerk nicht verfügbar beim Login und Playguard wird dann fehlschlagen und den Login verhindern.
+* Logge dich mit deinem aktuellen Nutzer aus und logge dich dann als einer der überwachten Nutzer wieder ein, warte 10 Minuten und logge dich dann wieder aus. Dann gehe auf die Startseite von deinem link:../server[Playguard-Server] und verifiziere, dass die Zeit korrekt protokolliert wurden.
