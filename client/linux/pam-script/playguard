@@ -8,28 +8,56 @@
 #	PAM_TTY		- the controlling tty
 #	PAM_AUTHTOK	- password in readable text
 #
-if [ "$PAM_TYPE" == "session" ] && [ "$PAM_SERVICE" != "su" ] && [ "$PAM_SERVICE" != "sudo" ] && [ -n "$PAM_USER" ]
+function log() {
+  echo `date '+%Y-%m-%d_%H:%M:%S'` $script for user $PAM_USER: $@ >> /var/log/playguard.log
+}
+
+function fail() {
+  log $@
+  echo $@ >> /dev/stderr
+  export PAM_SCRIPT_STATUS=1
+}
+
+PAM_SCRIPT_STATUS=0
+if [ "$PAM_SERVICE" != "su" ] && [ "$PAM_SERVICE" != "sudo" ] && [ -n "$PAM_USER" ]
 then
+  script=`basename $0`
   source /etc/playguard/password.conf
   pwd=${password[$PAM_USER]}
   if [ -n "$pwd" ]
   then
     . /etc/playguard/playguard.conf
-    script=`basename $0`
+    command=undefined
     if [ $script == "pam_script_ses_open" ]
+    then
+      command=login
+    elif [ $script == "pam_script_auth" ]
+    then
+      command=login
+    elif [ $script == "pam_script_acct" ]
     then
       command=login
     elif [ $script == "pam_script_ses_close" ]
     then
       command=logout
     fi
+    log  "$command event"
     result=`curl -k -s -u $PAM_USER:$pwd $url/event.php?cmd=$command\&src=$source 2>&1`
-    if [ $? != 0 ]
+    error=$?
+    if [ "$error" != 0 ]
     then
-      echo "CURL failed for $PAM_USER: $result" >> /tmp/playguard.log
-      exit -1
+      msg="CURL failed with exit code $error and result: $result"
+      if [ "$command" == "login" ]
+      then
+        fail $msg
+      else
+        log $msg
+      fi
+    elif [ "$command" == "login" ] && [ "$result" -lt "$minSecondsLeft" ]
+    then
+      fail "Only $result seconds left to play. Login denied"
     fi
-  fi 
+  fi
+  log "exiting with code $PAM_SCRIPT_STATUS"
 fi
-# success
-exit 0
+exit $PAM_SCRIPT_STATUS
