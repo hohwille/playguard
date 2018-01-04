@@ -136,7 +136,48 @@ function bonusClicked() {
   var bonusValues = [''<?php foreach ($config['bonus'] as $bonus) { echo ",'" . $bonus . "'"; } ?>];
   var bonus = bonusValues[bonusSelect.selectedIndex];
   var bonusText = bonusSelect.value;
-  extraCommentInput.value = extraCommentInput.value + ', ' + bonusText;
+  var extraPerWeek = bonus;
+  if (!extraDayInput.value) {
+    extraDayInput.value = new Date().toJSON().slice(0,10);
+  }
+  if (extraCommentInput.value) {
+    extraCommentInput.value = extraCommentInput.value + ', ' + bonusText;
+  } else {
+    extraCommentInput.value = bonusText;
+  }
+  if (extraMaxPerWeekInput.value) {
+    var extraSegments = extraMaxPerWeekInput.value.split(':');
+    var bonusSegments = bonus.split(':');
+    var segments = [0, 0, 0];
+    for (var i = 0; i < extraSegments.length; i++) {
+      segments[i] = parseInt(extraSegments[i]) + parseInt(bonusSegments[i]);
+      if (isNaN(segments[i])) {
+        segments[i]=0;
+      }
+      if (i > 0) {
+        if (segments[i] >= 60) {
+          segments[i-1]++;
+          if ((i > 1) && (segments[i-1] > 60)) {
+            segments[i-2]++;
+            segments[i-1] = segments[i-1] - 60;
+          }
+          segments[i] = segments[i] - 60;
+        }
+      }
+    }
+    extraPerWeek = '';
+    for (var i = 0; i < segments.length; i++) {
+      var digits = String(segments[i]);
+      if (digits.length == 1) {
+        digits = '0' + digits;
+      }
+      if (i > 0) {
+        extraPerWeek = extraPerWeek + ':';
+      }
+      extraPerWeek = extraPerWeek + digits;
+    }
+  }
+  extraMaxPerWeekInput.value = extraPerWeek;
 }
 bonusButton.onclick = bonusClicked;
 </script>
