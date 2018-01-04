@@ -42,7 +42,7 @@ then
       command=logout
     fi
     log  "$command event"
-    result=`curl -k -s -u $PAM_USER:$pwd $url/event.php?cmd=$command\&src=$source 2>&1`
+    result=`curl -k -s -u $PAM_USER:$pwd $url/event.php?cmd=$command\&src=$source\&minSec=$minSecondsLeft 2>&1`
     error=$?
     if [ "$error" != 0 ]
     then

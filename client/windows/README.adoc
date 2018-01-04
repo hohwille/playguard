@@ -1,0 +1,33 @@
+:toc:
+toc::[]
+
+= Playguard Windows Client
+
+== English
+The Playguard Windows client is a link:..[Playguard client] for Windows. It is a simple dos script (batch file) that requires http://www.confusedbycode.com/curl/#downloads[curl].
+
+In order to setup the client on a windows computer follow these steps:
+
+* Download http://www.confusedbycode.com/curl/#downloads[curl] on your windows computer and extract it to your local disc.
+* Ensure the `bin` folder of your CURL installation is in your path (`Computer > Properties > Advanced system settings > Environment Variables > User variables for ... > PATH`).
+* Verify your installation by opening a dos commandline (run `cmd`) and type:
+```
+curl --version
+```
+If you get a detailed version output of CURL then your installation was successful.
+* Download the contents of this directory with the link:playguard.bat[] script and the link:config[] folder with the configuration template to a folder on your windows computer (e.g. to `C:\Program Files\playguard`).
+* Customize the configuration with a text-editor (e.g. notepad++) and configure the passwords
+* Ensure your administrative windows account is protected by a personal and secure password.
+
+For each of your children do the following:
+* Create a non-administrative account with a personal password that you only give to this child (and is not known to its brothers or sisters). The child may later change his password so you may not even know.
+* Now login with the account of your child.
+* Start `gpedit.msc` and go to `User Conf > Windows Settings > Scripts`
+* Select `Logon` and for `Script Name` use the `Browse` button to choose your playguard script (e.g. `C:\Program Files\playguard\playguard.bat`. As `Script Parameter` type `login`. Confirm with `OK`.
+* Select `Logoff` and for `Script Name` use the `Browse` button to choose your playguard script (e.g. `C:\Program Files\playguard\playguard.bat`. As `Script Parameter` type `logout`. Confirm with `OK`.
+* Now you can logout.
+* You can login as your child again and verify that the login is now tracked in playguard by visiting the playguard server page with a web-browser.
+* After you have logged out again you can verify that the child is logged out of playguard and the playing time was properly tracked by visiting the playguard server page with a web-browser.
+
+== Deutsch
+TODO
