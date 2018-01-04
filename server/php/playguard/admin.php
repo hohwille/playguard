@@ -1,8 +1,8 @@
 <?php 
 include('./classes/Main.php');
-$now=time();
+$now = time();
 $main = new Main();
-$players=$main->getPlayers();
+$players = $main->getPlayers();
 $admin = $main->getAdminLoggedIn();
 $login = $_GET['login'];
 if ($login != NULL) {
@@ -21,6 +21,7 @@ if ($user == NULL) {
   <meta charset="UTF-8">
   <link rel="stylesheet" href="site.css">
 </head>
+<h2>Logged in as <?php echo $admin->login ?> (to logout supply empty login data on <a href="logout.php">logout page</a>)</h2>
 <body>
 <table>
 <thead>

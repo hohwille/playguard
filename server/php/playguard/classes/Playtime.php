@@ -85,3 +85,4 @@ class Playdays {
     $this->total = $this->total + $playtime->getDuration();
   }
 }
+?>

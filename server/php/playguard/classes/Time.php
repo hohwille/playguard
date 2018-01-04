@@ -148,12 +148,12 @@ class Time {
       $day = Time::getMondayOfThisWeek();
       if ($date >= $day->getTimestamp()) {
         $day->add(new DateInterval('P7D'));
-        if ($date <= $day->getTimestamp()) {        
+        if ($date <= $day->getTimestamp()) {
           return true;
         }
       }
     }
-    return false;      
+    return false;
   }
 }
 ?>

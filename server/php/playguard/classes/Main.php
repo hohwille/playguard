@@ -75,13 +75,26 @@ class Main {
   
   public static function authenticationRequired() {
     Main::loginFailure(401, 'Unauthorized');
+    echo 'Unauthorized';
+    exit;
   }
   
   public static function loginFailure($code, $status) {
-    header('HTTP/1.1 ' . $code . ' ' . $status, true, $code);
+    Main::httpStatus($code, $status);
+    Main::basicAuth();
+  }
+  
+  public static function basicAuth() {
     header('WWW-Authenticate: Basic realm="Playguard"');
-    echo '<html><body><h1>' . $status . '</h1></body></html>';
-    exit;
+  }
+
+  public static function httpStatus($code, $status) {
+    header('HTTP/1.1 ' . $code . ' ' . $status, true, $code);
+  }
+
+  public static function redirect($path) {
+    $url = ($_SERVER['HTTPS'] ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . dirname($_SERVER['REQUEST_URI']) . '/' . $path;
+    header('Location: ' . $url);
   }
   
   public static function getLogin() {
@@ -89,7 +102,7 @@ class Main {
     if ($login == NULL) {
       Main::authenticationRequired();
     }
-    return $login;    
+    return $login;
   }
 
   public function getPlayerLoggedIn() {
@@ -107,10 +120,7 @@ class Main {
   public function getAdminLoggedIn(){
     $player = $this->getPlayerLoggedIn();
     if (!$player->administrator) {
-      if ($_GET['relogin']) {
-        Main::authenticationRequired();        
-      }
-      $this->respond('403 Forbidden', '<a href="' . 'admin.php?relogin=true' . '">Administrator permission required</a>');
+      Main::forbidden();
       exit;
     }
     return $player;
@@ -201,7 +211,7 @@ class Main {
     $string = trim($string);
     if (empty($string)) {
       if ($default === NULL) {
-        exit('Missing required parameter: ' . $name);        
+        exit('Missing required parameter: ' . $name);
       } else  {
         return $default;
       }
