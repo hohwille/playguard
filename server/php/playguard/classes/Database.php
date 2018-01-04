@@ -94,7 +94,7 @@ class Database {
   }
 
   function updatePlayerExtra($player) {
-    $statement = $this->mysqli->prepare('UPDATE Player SET extra_day = FROM_UNIXTIME(?), extra_max_per_day = ?, extra_max_per_week = ?, extra_commnet = ? WHERE login = ?');
+    $statement = $this->mysqli->prepare('UPDATE Player SET extra_day = FROM_UNIXTIME(?), extra_max_per_day = ?, extra_max_per_week = ?, extra_comment = ? WHERE login = ?');
     if (!$statement) {
       $this->error();
     }
