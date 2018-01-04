@@ -69,10 +69,18 @@ class Main {
     header('Location: ' . $url, true, 302);
   }
 
+  public static function forbidden() {
+    Main::loginFailure(403, 'Forbidden');
+  }
+  
   public static function authenticationRequired() {
+    Main::loginFailure(401, 'Unauthorized');
+  }
+  
+  public static function loginFailure($code, $status) {
+    header('HTTP/1.1 ' . $code . ' ' . $status, true, $code);
     header('WWW-Authenticate: Basic realm="Playguard"');
-    header('HTTP/1.1 401 Unauthorized');
-    echo 'Unauthorized';
+    echo '<html><body><h1>' . $status . '</h1></body></html>';
     exit;
   }
   
@@ -108,8 +116,11 @@ class Main {
     return $player;
   }
 
-  public function login($player, $loginDate, $source) {
+  public function login($player, $loginDate, $source, $minSec) {
     global $config;
+    if ($player->getRest() < $minSec) {
+      return;
+    }
     if (($player->loginDate != NULL) && ($player->logoutDate == NULL)) { // implicit force logout (e.g. from new login)?
       $logoutMin = $player->confirmDate + $config['reloginDelay'];
       if ($loginDate < $logoutMin) {
@@ -172,8 +183,8 @@ class Main {
     $this->getDatabase()->savePlaytime($playtime);
   }
   
-  public function respondRemaintingTime($remaining) {
-    if ($remaining == 0) {
+  public function respondRemaintingTime($remaining, $minSec) {
+    if ($remaining < $minSec) {
       $this->respond('908 Playtime Over', $remaining);
     } else {
       $this->respond('200 OK', $remaining);

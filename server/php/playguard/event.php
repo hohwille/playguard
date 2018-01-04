@@ -5,8 +5,12 @@ $main = new Main();
 $player = $main->getPlayerLoggedIn();
 $command = $_GET['cmd'];
 $source = $_GET['src'];
+$minSec = $_GET['minSec'];
+if (empty($minSec)) {
+  $minSec = 0;
+}
 if ($command == 'login') {
-  $main->login($player, $now, $source);
+  $main->login($player, $now, $source, $minSec);
 } else if ($command == 'logout') {
   $main->logout($player, $now, $source);
 } else if ($command == 'confirm') {
@@ -19,5 +23,5 @@ if ($command == 'login') {
   exit;  
 }
 $remaining = $player->getRest();
-$main->respondRemaintingTime($remaining);
+$main->respondRemaintingTime($remaining, $minSec);
 ?>
