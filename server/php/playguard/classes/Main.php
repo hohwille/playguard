@@ -147,7 +147,7 @@ class Main {
       $this->doLogout($player, $logoutDate, $source, false);
     }
     $remaining = $player->getRest();
-    if ($remaining == 0) {
+    if ($remaining < $minSec) {
       $this->respondRemaintingTime($remaining);
       exit;
     }

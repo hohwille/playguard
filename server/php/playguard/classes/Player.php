@@ -72,18 +72,23 @@ class Player {
         if ($played < 0) {
           $played = 0;
         }
+        //if ($played > $config['reloginMaxPenalty']) {
+        //  $played = $config['reloginMaxPenalty'];
+        //}
       }
-      $played = $played + $this->playedDay;
     }
     return $played;
   }
   
   function getPlayedThisWeek() {
+    global $config;
     $played = 0;
     if (Time::isThisWeek($this->loginDate)) {
       $played = $this->playedWeek + $this->getPlayedToday();
       if (!Time::isToday($this->loginDate)) {
-        $played = $played + $this->playedDay;
+        if ($this->logoutDate == NULL) {
+          $played = $played + $config['reloginMaxPenalty'];
+        }
       }
     }
     return $played;
