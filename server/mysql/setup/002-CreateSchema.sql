@@ -30,9 +30,9 @@ CREATE TABLE Playtime (
   logout_confirmed BOOLEAN  
 );
 
-CREATE TABLE Playguard {
+CREATE TABLE Playguard (
   version    VARCHAR(20) NOT NULL,
   setup_date DATETIME NOT NULL 
-}
+);
 
 INSERT INTO Playguard (version, setup_date) VALUES ('1.0.0', now());
